@@ -7,8 +7,8 @@ namespace MisalignedSpace
     {
         static int printColorMap()
         {
-            string[] majorColors = GetMajorColor();
-            string[] minorColors = GetMinorColor();
+            string[] majorColors = GetMajorColors();
+            string[] minorColors = GetMinorColors();
             int pairNumber = 0;
             foreach (string majorColor in majorColors)
             {
@@ -20,12 +20,12 @@ namespace MisalignedSpace
             }
             return pairNumber;
         }
-        static string[] GetMajorColor()
+        static string[] GetMajorColors()
         {
             string[] majorColors = { "White", "Red", "Black", "Yellow", "Violet" };
             return majorColors;
         }
-        static string[] GetMinorColor()
+        static string[] GetMinorColors()
         {
             string[] minorColors = { "Blue", "Orange", "Green", "Brown", "Slate" };
             return minorColors;
