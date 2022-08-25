@@ -4,7 +4,7 @@
     {
         public int NetworkAlert(float celcius)
         {
-            if (celcius > 37)
+            if (celcius > 37.0f)
             {
                 return 500;
             }

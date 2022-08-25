@@ -48,7 +48,7 @@ namespace AlerterSpace
             Debug.Assert(alertFailureCount == 2);
 
             int networkAlertStubResult = stubs.Object.NetworkAlert(33.0f);
-            Debug.Assert(networkAlertStubResult == 200);
+            Debug.Assert(networkAlertStubResult == 500);
             networkAlertStubResult = stubs.Object.NetworkAlert(38.0f); 
             Debug.Assert(networkAlertStubResult == 500);
 
