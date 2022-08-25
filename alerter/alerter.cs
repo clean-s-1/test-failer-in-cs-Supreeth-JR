@@ -47,9 +47,9 @@ namespace AlerterSpace
             alertInCelcius(95);
             Debug.Assert(alertFailureCount == 2);
 
-            int networkAlertStubResult = stubs.Object.NetworkAlert(33);
+            int networkAlertStubResult = stubs.Object.NetworkAlert(33.0f);
             Debug.Assert(networkAlertStubResult == 200);
-            networkAlertStubResult = stubs.Object.NetworkAlert(38); 
+            networkAlertStubResult = stubs.Object.NetworkAlert(38.0f); 
             Debug.Assert(networkAlertStubResult == 500);
 
             double clecius = ConvertToCelcius(303.6f);
