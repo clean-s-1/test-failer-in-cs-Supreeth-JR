@@ -1,31 +1,59 @@
 ﻿using System;
+using System.Diagnostics;
+using alerter;
+using Moq;
 
-namespace AlerterSpace {
-    class Alerter {
+namespace AlerterSpace
+{
+    class Alerter
+    {
         static int alertFailureCount = 0;
-        static int networkAlertStub(float celcius) {
-            Console.WriteLine("ALERT: Temperature is {0} celcius", celcius);
-            // Return 200 for ok
-            // Return 500 for not-ok
-            // stub always succeeds and returns 200
+        static int networkAlertStub(float celcius)
+        {
+            PrintOutput(celcius);
+            if (celcius > 37)
+            {
+                return 500;
+            }
             return 200;
         }
-        static void alertInCelcius(float farenheit) {
-            float celcius = (farenheit - 32) * 5 / 9;
+        static void alertInCelcius(float farenheit)
+        {
+            float celcius = ConvertToCelcius(farenheit);
             int returnCode = networkAlertStub(celcius);
-            if (returnCode != 200) {
-                // non-ok response is not an error! Issues happen in life!
-                // let us keep a count of failures to report
-                // However, this code doesn't count failures!
-                // Add a test below to catch this bug. Alter the stub above, if needed.
-                alertFailureCount += 0;
+            if (returnCode != 200)
+            {
+                alertFailureCount += 1;
             }
         }
-        static void Main(string[] args) {
+        static float ConvertToCelcius(float farenheit)
+        {
+            float celcius = (farenheit - 32) * 5 / 9;
+            return celcius;
+        }
+
+        static void PrintOutput(float celcius)
+        {
+            Console.WriteLine("ALERT: Temperature is {0} celcius", celcius);
+        }
+        static void Main(string[] args)
+        {
+            Mock<INetworkStubs> stubs = new Mock<INetworkStubs>();
+
+            stubs.Setup(x => x.NetworkAlert(It.IsAny<float>())).Returns(500);
+
             alertInCelcius(400.5f);
             alertInCelcius(303.6f);
-            Console.WriteLine("{0} alerts failed.", alertFailureCount);
-            Console.WriteLine("All is well (maybe!)\n");
+            alertInCelcius(95);
+            Debug.Assert(alertFailureCount == 2);
+
+            int networkAlertStubResult = stubs.Object.NetworkAlert(33.0f);
+            Debug.Assert(networkAlertStubResult == 500);
+            networkAlertStubResult = stubs.Object.NetworkAlert(38.0f); 
+            Debug.Assert(networkAlertStubResult == 500);
+
+            double clecius = ConvertToCelcius(303.6f);
+            Debug.Assert(Math.Round(clecius,1)  == 150.9);
         }
     }
 }
